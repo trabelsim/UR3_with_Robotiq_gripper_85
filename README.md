@@ -2,6 +2,8 @@
 # UR3_embedded_gripper_85_robotiq
 This project has been developed with the goal of creating a system to control the cobot in simulation. Here the Cobot UR3 Series with the attached gripper , simulated in rviz and gazebo, can be controlled from Rviz or as well from the terminal by using scripts written in python.
 
+![rviz_visualization](https://github.com/trabelsim/UR3_with_Robotiq_gripper_85/blob/master/gripper85.png)
+
 ## Requirements
 ROS version : Melodic
 
