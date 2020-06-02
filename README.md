@@ -12,7 +12,7 @@ O.S : Ubuntu 18.04
 # Getting started
 
 ## Installation
-### Set-up the workspace and universal_robot
+### Set-up the workspace and install universal_robot package
 * [universal_robot](https://github.com/ros-industrial/universal_robot) - ROS-Industrial
 
 ```
@@ -44,7 +44,8 @@ At this moment we have set-up our UR environment, which can be already used but 
 
 [2F-85 Gripper](https://robotiq.com/products/2f85-140-adaptive-robot-gripper?ref=nav_product_new_button#support-documents-no-auto-scroll)
 
-The downloaded file has the format of .STEP.
+In the download tab select Universal Robots, then Software, Gripper Software and in the end choose the Universal Robots URCAP (UCG-1.81 for Polyscope 3.10+ / 5.4+) and click on Download ZIP.
+The downloaded file is .STEP format and contains the 3D model of the gripper which has to be converted before attaching to the robot.
 
 **In order for the xacro to be processed the format has to be CONVERTED IN .STL OR .DAE**
 
@@ -64,14 +65,18 @@ So we will need to add the model to both of them (visual and collision).
 #move to the path with the .stl/.dae file 
 cd /path/where/the/file/has_been_saved_and_converted.stl
 
-#replace the effector_name with the name of the effector you converted already
-cp effector_name.stl ~/catkin_ws/src/universal_robot/ur_description/meshes/ur3/collision
+#In my case the file is named "efektor_otwarty.stl"
+#replace the effector_name with the name of the effector you converted already and copy it into ur_description/meshes/ur3/collision folder
+cp efektor_otwarty.stl ~/catkin_ws/src/universal_robot/ur_description/meshes/ur3/collision
 
-#the same has to be done for the visual state
-cp effector_name.stl ~/catkin_ws/src/universal_robot/ur_description/meshes/ur3/visual
+#the same has to be done for the visual state, but this time for the visual folder.
+cp efektor_otwarty.stl ~/catkin_ws/src/universal_robot/ur_description/meshes/ur3/visual
 ```
-    
+
 ### Create the gripper xacro file
+Now that we added our 3D models to the workspace, we need to call them and attach to the appropriate place.
+For this scope we need a xacro file which will manage the gripper separately. Then in the next steps we will combine the gripper xacro file to the robot xacro file.
+
 Let's first move to the folder where the urdf files are stored.
 
 ```
@@ -84,26 +89,26 @@ Paste the following code inside :
 <?xml version="1.0" encoding="utf-8"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
   <!-- Here we define the 2 parameters of the macro -->
-  <xacro:macro name="effector_name_X" params="prefix connected_to">
+  <xacro:macro name="measurement_tool" params="prefix connected_to">
     <!-- Create a fixed joint with a parameterized name. -->
-    <joint name="${prefix}effector_name_joint" type="fixed">
+    <joint name="${prefix}measurement_tool_joint" type="fixed">
       <!-- The parent link must be read from the robot model it is attached to. -->
       <parent link="${connected_to}"/>
-      <child link="${prefix}effector_name"/>
-      <!-- The tool is directly attached to the flange. -->
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <child link="${prefix}measurement_tool"/>
+      <!-- The effector has to be attached with the following parameteres,otherwise it won't be at the effector position. -->
+      <origin rpy="1.5708 0 0" xyz="-0.061 0.076 -0.001"/>
     </joint>
     <link name="${prefix}effector_name_link">
       <visual>
         <geometry>
           <!-- The path to the visual meshes in the package. -->
-          <mesh filename="package://ur_description/meshes/ur3/visual/effector_file.stl" scale="0.001 0.001 0.001 />
+          <mesh filename="package://ur_description/meshes/ur3/visual/efektor_otwarty.stl" scale = "0.0008 0.0008 0.0008" />
         </geometry>
       </visual>
       <collision>
         <geometry>
           <!-- The path to the collision meshes in the package. -->
-          <mesh filename="package://ur_description/meshes/ur3/collision/effector_file.stl" scale="0.001 0.001 0.001 />
+          <mesh filename="package://ur_description/meshes/ur3/collision/efektor_otwarty.stl" scale = "0.0008 0.0008 0.0008" />
         </geometry>
       </collision>
     </link>
@@ -121,10 +126,12 @@ Paste the following code inside :
 ```
 Save the file and close it.
 
+At this time we can move on and combine the gripper xacro file with the robot xacro file.
+
 ### Modify the ur3_robot.urdf.xacro file
 
 Now we need to add the file we have just created to our main xacro file.
-Basically the ur3_robot.xacro file gets the information from various .xacro and then load them in order to run together.
+Basically the ur3_robot.xacro file gets the information from various .xacro and then load them in order to run them together.
 
 ```
 gedit ur3_robot.urdf.xacro
@@ -172,7 +179,7 @@ add the following text :
 ```
 
 And save it.
-Now we need to generate our urdf, so we will need to call the following command : 
+Now we need to generate our urdf (it means that the structure will be compiled) , so we will need to call the following command : 
 ```
 rosrun xacro xacro -o gripper.urdf gripper.xacro
 ```
