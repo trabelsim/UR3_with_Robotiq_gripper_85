@@ -335,20 +335,20 @@
     <!-- The parent link must be read from the robot model it is attached to. -->
     <parent link="tool0"/>
     <child link="measurement_tool"/>
-    <!-- The tool is directly attached to the flange. -->
-    <origin rpy="1.5708 0 0" xyz="-0.08 0.093 -0.01"/>
+    <!-- Effector position -->
+    <origin rpy="1.5708 0 0" xyz="-0.061 0.076 -0.001"/>
   </joint>
   <link name="measurement_tool">
     <visual>
       <geometry>
         <!-- The path to the visual meshes in the package. -->
-        <mesh filename="package://ur_description/meshes/ur3/visual/efektor_otwarty.dae" scale = "0.001 0.001 0.001"/>
+        <mesh filename="package://ur_description/meshes/ur3/visual/efektor_otwarty.dae" scale = "0.0008 0.0008 0.0008"/>
       </geometry>
     </visual>
     <collision>
       <geometry>
         <!-- The path to the collision meshes in the package. -->
-        <mesh filename="package://ur_description/meshes/ur3/collision/efektorotwarty.stl" scale = "0.001 0.001 0.001"/>
+        <mesh filename="package://ur_description/meshes/ur3/collision/efektorotwarty.stl" scale = "0.0008 0.0008 0.0008"/>
       </geometry>
     </collision>
   </link>
