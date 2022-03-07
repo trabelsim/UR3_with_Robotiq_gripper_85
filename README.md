@@ -43,8 +43,11 @@ At this moment we have set-up our UR environment, which can be already used but 
 ### Download the gripper
 
 [2F-85 Gripper](https://robotiq.com/products/2f85-140-adaptive-robot-gripper?ref=nav_product_new_button#support-documents-no-auto-scroll)
+In order to download the 3D model of the gripper follow the steps in the screenshot below (in the Download file of the link):
+![gripper_download_85](https://user-images.githubusercontent.com/37307764/157120630-d0452c47-6cbc-4f64-b0f8-b2507060d11a.png)
 
-In the download tab select Universal Robots, then Software, Gripper Software and in the end choose the Universal Robots URCAP (UCG-1.81 for Polyscope 3.10+ / 5.4+) and click on Download ZIP.
+
+<!-- In the download tab select Universal Robots, then Software, Gripper Software and in the end choose the Universal Robots URCAP (UCG-1.81 for Polyscope 3.10+ / 5.4+) and click on Download ZIP. -->
 The downloaded file is .STEP format and contains the 3D model of the gripper which has to be converted before attaching to the robot.
 
 **In order for the xacro to be processed the format has to be CONVERTED IN .STL OR .DAE**
