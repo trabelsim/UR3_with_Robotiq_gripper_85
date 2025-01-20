@@ -16,7 +16,7 @@ O.S : Ubuntu 18.04
 * [universal_robot](https://github.com/ros-industrial/universal_robot) - ROS-Industrial
 
 ```
-sudo apt-get install ros-$ROS_DISTRO-universal-robot
+sudo apt-get install ros-$ROS_DISTRO-universal-robots
 ```
 
 replace ```$ROS_DISTRO``` with ```melodic```
